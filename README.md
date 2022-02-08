@@ -5,7 +5,7 @@
 ```
 git clone [initxlab/ngd-api-server]
 ```
-
+ 
 **Download Composer dependencies**
 
 You need [Composer](https://getcomposer.org/download/) complete the process. 
