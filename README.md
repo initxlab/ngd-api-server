@@ -94,7 +94,7 @@ Creating new User and assign ownership of an embedded existing array IRIs string
 
 GET a product item with an array of stock objects. 
   
-- Response
+- Response body
 
 ```json
 {
@@ -360,6 +360,38 @@ Removing stock from User collection
     }
   ],
   "countStocks": 1
+}
+```
+
+You can create a User without stock
+- Request
+```json
+{
+  "email": "frank@example.com",
+  "password": "123456",
+  "username": "frank",
+  "warehouses": [
+  ]
+}
+```
+- Or simply
+```json
+{
+  "email": "frank@example.com",
+  "password": "123456",
+  "username": "frank"
+}
+```
+
+- Response body in both cases
+```json
+{
+  "@context": "/api/contexts/User",
+  "@id": "/api/users/2075",
+  "@type": "User",
+  "email": "frank@example.com",
+  "username": "frank",
+  "countStocks": 0
 }
 ```
 ...
