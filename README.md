@@ -1,6 +1,6 @@
-### Next Generation standalone API Server. Part of the initxlab/ngd-api project
+### PHP8 next generation API Server. Part of the [initxlab/ngd-api](https://github.com/initxlab/ngd-api) project
 
-### Setup initxlab/ngd-api-server v.1.0-dev
+#### Setup initxlab/ngd-api-server
 
 Download or clone the repo from GitHub
 - requirement : <mark>php >= 8.0.2 </mark>
