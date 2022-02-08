@@ -1,9 +1,11 @@
 ### Next Generation standalone API Server. Part of the initxlab/ngd-api project
 
 ### Setup initxlab/ngd-api-server v.1.0-dev
+
+Download or clone the repo from GitHub
 - requirement : <mark>php >= 8.0.2 </mark>
 ```
-git clone [initxlab/ngd-api-server]
+git clone https://github.com/initxlab/ngd-api-server.git
 ```
  
 **Download Composer dependencies**
