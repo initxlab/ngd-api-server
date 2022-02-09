@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the initxlab/ngd-api-server package.
+ *
+ * (c) Jean "Nemo" M. <initxlab@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace App\Entity;
 
@@ -24,16 +32,16 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ApiResource(
     collectionOperations: [C::_GET,C::_POST],
     itemOperations: [
-        C::_GET=>[
-            C::NORMALIZATION_CONTEXT=>[
-                C::GROUPS=>[
-                    C::R_WAREHOUSE,
-                    C::ITEM_GET_WAREHOUSE
-                ]
+    C::_GET=>[
+        C::NORMALIZATION_CONTEXT=>[
+            C::GROUPS=>[
+                C::R_WAREHOUSE,
+                C::ITEM_GET_WAREHOUSE
             ]
-        ],
-        C::_PUT
+        ]
     ],
+    C::_PUT
+],
     shortName: C::SHORT_NAME_WAREHOUSE,
     attributes: [
     C::PAGINATION_PER_PAGE => 5,

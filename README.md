@@ -560,7 +560,6 @@ You can create a User without stock
   "countStocks": 0
 }
 ```
-...
 
 Work in progress.
 

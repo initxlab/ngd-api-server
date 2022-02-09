@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the initxlab/ngd-api-server package.
+ *
+ * (c) Jean "Nemo" M. <initxlab@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace App\Entity;
 
@@ -24,6 +32,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=NgdProductLineRepository::class)
+ *
  */
 #[ApiResource (
     collectionOperations: [C::_GET,C::_POST],
