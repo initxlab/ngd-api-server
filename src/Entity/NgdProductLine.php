@@ -73,7 +73,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 class NgdProductLine extends ApiEntityBase
 {
     /**
-     * TODO : IMPLEMENT VALIDATOR CONSTRAINTS
      * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
     #[Groups([C::R_PRODUCT_LINE,C::W_PRODUCT_LINE])]
@@ -92,12 +91,12 @@ class NgdProductLine extends ApiEntityBase
     /**
      * @ORM\Column(type="datetime")
      */
-    private ?DateTimeInterface $createdAt;
+    private DateTimeInterface $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?DateTimeInterface $updatedAt;
+    private ?DateTimeInterface $updatedAt = null;
 
     /**
      * @ORM\Column(type="boolean")
@@ -233,7 +232,7 @@ class NgdProductLine extends ApiEntityBase
      * @return string|null
      */
     #[Groups([C::R_PRODUCT_LINE])]
-    #[SerializedName("description")]
+    #[SerializedName(C::LABEL_DESCRIPTION)]
     public function getShortDescription(): ?string {
         if(strlen($this->description) < 40){
             return $this->description;
@@ -246,7 +245,7 @@ class NgdProductLine extends ApiEntityBase
      * @return string
      */
     #[Groups([C::R_PRODUCT_LINE])]
-    #[SerializedName("created.at")]
+    #[SerializedName(C::LABEL_CREATED_AT)]
     public function getCreatedAtAgo(): string {
         return Carbon::instance($this->getCreatedAt())->diffForHumans();
     }
@@ -279,7 +278,7 @@ class NgdProductLine extends ApiEntityBase
     }
 
     #[Groups([C::R_PRODUCT_LINE])]
-    #[SerializedName("countProducts")]
+    #[SerializedName(C::LABEL_STAT_PRODUCT)]
     public function getCountProducts() : int
     {
         return $this->warehouses->count();

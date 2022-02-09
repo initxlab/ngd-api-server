@@ -91,6 +91,7 @@ class NgdWarehouse extends ApiEntityBase
      * @ORM\Column(type="text", nullable=false)
      */
     #[Groups([C::R_PRODUCT_LINE,C::R_WAREHOUSE,C::W_WAREHOUSE,C::ITEM_GET_USER,C::W_USER])]
+    #[Assert\NotBlank()]
     private string $description;
 
     /**
@@ -103,6 +104,7 @@ class NgdWarehouse extends ApiEntityBase
     /**
      * @ORM\Column(type="datetime_immutable")
      */
+
     private DateTimeInterface  $createdAt;
 
     /**
