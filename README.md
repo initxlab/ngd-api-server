@@ -58,32 +58,34 @@ symfony server:start --port=PORT_NUMBER
 Note: You may face this `symfony server:ca:install` message while running the server. 
 You can follow instructions or ignore.
 
-Open `https://localhost:8000/api` with your favorite web browser
+Open `http://localhost:8000/api` with your favorite web browser
 ### API Resources
 Given a User #id 2075 (id may divert on your env.) you can preview response body in any format you configured on server side
 
 - json
 
-`https://localhost:8000/api/users/2075.json`
+`http://localhost:8000/api/users/2075.json`
 - jsonld
 
-`https://localhost:8000/api/users/2075.jsonld`
+`http://localhost:8000/api/users/2075.jsonld`
 
 - jsonhal
 
-`https://localhost:8000/api/users/2075.jsonhal`
+`http://localhost:8000/api/users/2075.jsonhal`
 
 You can also display the entire collection of items following the above logic.
 - Collection of Users
 
-`https://localhost:8000/api/users.jsonld`
+`http://localhost:8000/api/users.jsonld`
 
 Ngd-api comes with powerful filtering 
 features able to deal with simple to complex submitted request body.
 
-Basic Filtering User by a property. Using jsonld but any format of your pick will make it. As explain above.
+## Data filtering
 
-`https://localhost:8000/api/users/2075.jsonld?properties[]=username`
+1. Basic usage
+
+`http://localhost:8000/api/users/2075.jsonld?properties[]=username`
 
 Response body
 
@@ -96,7 +98,7 @@ Response body
 }
 ```
 
-`https://localhost:8000/api/users/2075.jsonld?properties[]=email`
+`http://localhost:8000/api/users/2075.jsonld?properties[]=email`
 
 Response body
 
@@ -111,7 +113,7 @@ Response body
 
 You also can retrieve a whole collection.
 
-`https://localhost:8000/api/users.jsonld?properties[]=email`
+`http://localhost:8000/api/users.jsonld?properties[]=email`
 
 Response body (limited to 5 items per a page)
 
@@ -171,6 +173,58 @@ Response body (limited to 5 items per a page)
 }
 ```
 
+2. Advanced usage
+
+Giving the below response body
+
+- Request URL
+`http://localhost:8000/api/users/1800`
+
+Response body  
+```json
+{
+  "@context": "/api/contexts/User",
+  "@id": "/api/users/1800",
+  "@type": "User",
+  "email": "reichert.erica@hotmail.com",
+  "username": "jazmyn.prohaskas",
+  "warehouses": [
+    {
+      "@id": "/api/warehouses/004dc05d-c203-4fd4-a3d5-c9818be6213f",
+      "@type": "Warehouse",
+      "stock": 1540,
+      "label": "Car new label",
+      "description": "Quibusdam quae aspernatur nihil ullam voluptate sit. Illum temporibus doloremque minima laudantium voluptatem fugit natus. Soluta natus eos quos voluptatem culpa adipisci. Quo similique ipsa ut id cum quas.",
+      "picture": null,
+      "created.at": "2 days ago"
+    }
+  ],
+  "countStocks": 1
+}
+```
+
+Applying property filter on embedded objects
+
+- Request
+`http://localhost:8000/api/users/1800?properties[]=username&properties[warehouses][]=label`
+
+Response body
+```json
+{
+  "@context": "/api/contexts/User",
+  "@id": "/api/users/1800",
+  "@type": "User",
+  "username": "jazmyn.prohaskas",
+  "warehouses": [
+    {
+      "@id": "/api/warehouses/004dc05d-c203-4fd4-a3d5-c9818be6213f",
+      "@type": "Warehouse",
+      "label": "Car new label"
+    }
+  ]
+}
+```
+  
 **OPERATIONS**
 
 Creating new User and new embedded object. Will create the User and Stock with association
