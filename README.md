@@ -59,6 +59,25 @@ Note: You may face this `symfony server:ca:install` message while running the se
 You can follow instructions or ignore.
 
 Open `https://localhost:8000/api` with your favorite web browser
+### API Resources
+Given a User #id 2075 you can preview response body in any format you configured on server side
+
+- json
+
+`https://localhost:8000/api/users/2075.json`
+- jsonld
+
+`https://localhost:8000/api/users/2075.jsonld`
+
+- jsonhal
+
+`https://localhost:8000/api/users/2075.jsonhal`
+
+You can also display the entire collection of items following the above logic.
+- Collection of Users
+
+`https://localhost:8000/api/users.jsonld`
+
 
 **OPERATIONS**
 
