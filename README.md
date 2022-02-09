@@ -237,7 +237,7 @@ Creating new User and new embedded object. Will create the User and Stock with a
   "warehouses": [
     {
       "stock": 1000,
-      "item": "/api/products/28ba1040-a73d-4480-825c-5f02bca5250b",
+      "product": "/api/products/28ba1040-a73d-4480-825c-5f02bca5250b",
       "label": "The label goes here",
       "description":"great description"
     }
@@ -430,14 +430,14 @@ at both level.
   "warehouses": [
     {
       "stock": 1000,
-      "item": "/api/products/28ba1040-a73d-4480-825c-5f02bca5250b",
+      "product": "/api/products/28ba1040-a73d-4480-825c-5f02bca5250b",
       "label": "",
       "description":"great description "
     }
   ]
 }
 ```
-- Response
+- Response throws a Constraint Violation
 ```json
 {
   "@context": "/api/contexts/ConstraintViolationList",
@@ -453,7 +453,8 @@ at both level.
   ]
 }
 ```
-Updating User stocks with an array of stock IRIs
+Updating User stocks with an array of stock IRIs.
+
 - Request (PUT)
 ```json
 {
@@ -495,7 +496,7 @@ Updating User stocks with an array of stock IRIs
   "countStocks": 2
 }
 ```
-Removing stock from User collection
+Removing stock from User warehouse collection
 - Request
 ```json
 {
@@ -505,7 +506,7 @@ Removing stock from User collection
   ]
 }
 ```
-- Response
+- Response body
 ```json
 {
   "@context": "/api/contexts/User",

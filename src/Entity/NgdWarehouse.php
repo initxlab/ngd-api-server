@@ -53,7 +53,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 )]
 #[ApiFilter(PropertyFilter::class)]
 #[ApiFilter(RangeFilter::class,properties: [C::PROP_STATS_WAREHOUSE])]
-#[ApiFilter(SearchFilter::class,properties: [C::PROP_PRODUCT=>C::MATCH_EXACT])]
+#[ApiFilter(SearchFilter::class,properties: [
+    "owner"=>C::MATCH_EXACT,
+    "owner.username"=>C::MATCH_PARTIAL,
+    "product.name"=>C::MATCH_PARTIAL
+])]
 class NgdWarehouse extends ApiEntityBase
 {
     /**
@@ -70,7 +74,6 @@ class NgdWarehouse extends ApiEntityBase
      * @Groups({"warehouse:read","warehouse:write","user:write"})
      * @Assert\Valid()
      */
-    #[SerializedName("item")]
     private $product;
 
     /**
