@@ -19,8 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
- * TODO: REMOVE ALL HARD-CODING CALL CONST FROM PARAMS
- * MIGRATE TO NOW NATIVE ANNOTATION SYNTAX
  * @ORM\Entity(repositoryClass=NgdWarehouseRepository::class)
  */
 #[ApiResource(
@@ -44,7 +42,6 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         C::F_JSON,
         C::F_HTML,
         C::F_JSONHAL,
-        /* Local declaration of a csv format, not global scope from in the api_platform conf. Only apply to this resource */
         C::F_CSV=>[C::MIME_TXT_CSV]
     ]
 ],
@@ -54,60 +51,58 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ApiFilter(PropertyFilter::class)]
 #[ApiFilter(RangeFilter::class,properties: [C::PROP_STATS_WAREHOUSE])]
 #[ApiFilter(SearchFilter::class,properties: [
-    "owner"=>C::MATCH_EXACT,
-    "owner.username"=>C::MATCH_PARTIAL,
-    "product.name"=>C::MATCH_PARTIAL
+    C::PROP_OWNER=>C::MATCH_EXACT,
+    C::PROP_OWNER_USERNAME=>C::MATCH_PARTIAL,
+    C::PROP_PRODUCT_NAME=>C::MATCH_PARTIAL
 ])]
 class NgdWarehouse extends ApiEntityBase
 {
     /**
-     * SETTING ITEM GET TO APPLY ONLY ON A SINGLE ITEM AND NOT ON THE COLLECTION
      * @ORM\Column(type="integer", nullable=true)
      */
-    #[Groups([C::ITEM_GET_PRODUCT_LINE,"warehouse:read","warehouse:write","user:item:get","user:write"])]
-    #[SerializedName("stock")]
+    #[Groups([C::ITEM_GET_PRODUCT_LINE,C::R_WAREHOUSE,C::W_WAREHOUSE,C::ITEM_GET_USER,C::W_USER])]
+    #[SerializedName(C::LABEL_STOCK)]
     private ?int $countStock = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity=NgdProductLine::class, inversedBy="warehouses")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"warehouse:read","warehouse:write","user:write"})
-     * @Assert\Valid()
      */
+    #[Groups([C::R_WAREHOUSE,C::W_WAREHOUSE,C::W_USER])]
+    #[Assert\Valid()]
     private $product;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="warehouses")
      * @ORM\JoinColumn(nullable=false)
      */
-    #[Groups([C::R_PRODUCT_LINE,"warehouse:read","warehouse:write"])]
+    #[Groups([C::R_PRODUCT_LINE,C::R_WAREHOUSE,C::W_WAREHOUSE])]
     #[Assert\Valid()]
     private $owner;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
-    #[Groups([C::R_PRODUCT_LINE,"warehouse:read","warehouse:write","user:item:get","user:write"])]
-    private $label;
+    #[Groups([C::R_PRODUCT_LINE,C::R_WAREHOUSE,C::W_WAREHOUSE,C::ITEM_GET_USER,C::W_USER])]
+    #[Assert\NotBlank()]
+    private string $label;
 
     /**
      * @ORM\Column(type="text", nullable=false)
      */
-    #[Groups([C::R_PRODUCT_LINE,"warehouse:read","warehouse:write","user:item:get","user:write"])]
+    #[Groups([C::R_PRODUCT_LINE,C::R_WAREHOUSE,C::W_WAREHOUSE,C::ITEM_GET_USER,C::W_USER])]
     private string $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups("user:item:get")]
-    #[SerializedName("picture")]
+    #[Groups(C::ITEM_GET_USER)]
+    #[SerializedName(C::LABEL_PICTURE)]
     private ?string $fileName = null;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-
     private DateTimeInterface  $createdAt;
 
     /**
@@ -217,8 +212,8 @@ class NgdWarehouse extends ApiEntityBase
         return $this;
     }
 
-    #[Groups(["user:item:get"])]
-    #[SerializedName("created.at")]
+    #[Groups([C::ITEM_GET_USER])]
+    #[SerializedName(C::LABEL_CREATED_AT)]
     public function getCreatedAtAgo(): string {
         return Carbon::instance($this->getCreatedAt())->diffForHumans();
     }

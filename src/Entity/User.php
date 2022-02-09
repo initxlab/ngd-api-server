@@ -18,21 +18,20 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * TODO: REMOVE ALL HARD-CODING CALL CONST FROM PARAMS
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 #[ApiResource(
-    collectionOperations: ["GET","POST"],
+    collectionOperations: [C::_GET,C::_POST],
     itemOperations: [
-    "GET"=>[
-        "normalization_context"=>[
-            "groups"=>[
-                "user:read",
-                "user:item:get"
+    C::_GET=>[
+        C::NORMALIZATION_CONTEXT=>[
+            C::GROUPS=>[
+                C::R_USER,
+                C::ITEM_GET_USER
             ]
         ]
     ],
-    "PUT"
+    C::_PUT
 ],
     attributes: [
     C::PAGINATION_PER_PAGE => 5,
@@ -41,19 +40,19 @@ use Symfony\Component\Validator\Constraints as Assert;
         C::F_JSON,
         C::F_HTML,
         C::F_JSONHAL,
-        /* Local declaration of a csv format, not global scope from in the api_platform conf. Only apply to this resource */
         C::F_CSV=>[C::MIME_TXT_CSV]
     ]
 ],
-    denormalizationContext: ["groups"=>["user:write"]],
-    normalizationContext: ["groups"=>["user:read"]]
+    denormalizationContext: [C::GROUPS=>[C::W_USER]],
+    normalizationContext: [C::GROUPS=>[C::R_USER]]
 )]
 // ADDING PROPERTY FILTERS - See README.MD for usage
 #[ApiFilter(PropertyFilter::class)]
-#[UniqueEntity(fields: ["username"])]
-#[UniqueEntity(fields: ["email"])]
+#[UniqueEntity(fields: [C::PROP_USERNAME])]
+#[UniqueEntity(fields: [C::PROP_EMAIL])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    private const ROLE_USER = "ROLE_USER";
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -64,7 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    #[Groups(["user:read","user:write"])]
+    #[Groups([C::R_USER,C::W_USER])]
     #[Assert\NotBlank()]
     #[Assert\Email()]
     private string $email;
@@ -78,13 +77,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    #[Groups(["user:write"])]
+    #[Groups([C::R_USER,C::W_USER])]
+    #[Assert\NotBlank()]
     private string $password;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    #[Groups(["user:read","user:write","warehouse:item:get","warehouse:write"])]
+    #[Groups([C::R_USER,C::W_USER,C::ITEM_GET_WAREHOUSE,C::W_WAREHOUSE])]
     #[Assert\NotBlank()]
     private string $username;
 
@@ -92,7 +92,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=NgdWarehouse::class, mappedBy="owner",cascade={"persist"},orphanRemoval=true)
      * @Assert\Valid()
      */
-    #[Groups(["user:item:get","user:write"])]
+    #[Groups([C::ITEM_GET_USER,C::W_USER])]
     private $warehouses;
 
     public function __construct()
@@ -134,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -210,8 +210,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    #[Groups(["user:read"])]
-    #[SerializedName("countStocks")]
+    #[Groups([C::R_USER])]
+    #[SerializedName(C::PRO_STAT_STOCK)]
     public function getCountProducts() : int
     {
         return $this->warehouses->count();

@@ -47,7 +47,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
         C::F_JSON,
         C::F_HTML,
         C::F_JSONHAL,
-        /* Local declaration of a csv format, not global scope from in the api_platform conf. Only apply to this resource */
         C::F_CSV=>[C::MIME_TXT_CSV]
     ]
 ],
@@ -70,7 +69,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
     C::PROP_NAME=>C::MATCH_PARTIAL,
     C::PROP_DESC=>C::MATCH_PARTIAL,
 ])]
-#[UniqueEntity(fields: ["name"])]
+#[UniqueEntity(fields: [C::PROP_NAME])]
 class NgdProductLine extends ApiEntityBase
 {
     /**
@@ -80,7 +79,6 @@ class NgdProductLine extends ApiEntityBase
     #[Groups([C::R_PRODUCT_LINE,C::W_PRODUCT_LINE])]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
-    #[SerializedName("name")]
     private string $name;
 
     /**
@@ -89,7 +87,6 @@ class NgdProductLine extends ApiEntityBase
     #[Groups([C::W_PRODUCT_LINE])]
     #[Assert\NotBlank()]
     #[Assert\Length(max: 1024)]
-    #[SerializedName("description")]
     private string $description;
 
     /**
@@ -106,14 +103,14 @@ class NgdProductLine extends ApiEntityBase
      * @ORM\Column(type="boolean")
      */
     #[Groups([C::R_PRODUCT_LINE,C::W_PRODUCT_LINE])]
-    #[SerializedName("active")]
+    #[SerializedName(C::LABEL_ACTIVE)]
     private ?bool $isPublished = false;
 
     /**
      * @ORM\OneToMany(targetEntity=NgdWarehouse::class, mappedBy="product", orphanRemoval=true)
      */
     #[Groups([C::ITEM_GET_PRODUCT_LINE])]
-    #[SerializedName("stocks")]
+    #[SerializedName(C::LABEL_STOCKS)]
     private $warehouses;
 
     public function __construct()
