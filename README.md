@@ -60,7 +60,7 @@ You can follow instructions or ignore.
 
 Open `https://localhost:8000/api` with your favorite web browser
 ### API Resources
-Given a User #id 2075 you can preview response body in any format you configured on server side
+Given a User #id 2075 (id may divert on your env.) you can preview response body in any format you configured on server side
 
 - json
 
@@ -78,6 +78,98 @@ You can also display the entire collection of items following the above logic.
 
 `https://localhost:8000/api/users.jsonld`
 
+Ngd-api comes with powerful filtering 
+features able to deal with simple to complex submitted request body.
+
+Basic Filtering User by a property. Using jsonld but any format of your pick will make it. As explain above.
+
+`https://localhost:8000/api/users/2075.jsonld?properties[]=username`
+
+Response body
+
+```json
+{
+  "@context": "/api/contexts/User",
+  "@id": "/api/users/2075",
+  "@type": "User",
+  "username": "jean.m"
+}
+```
+
+`https://localhost:8000/api/users/2075.jsonld?properties[]=email`
+
+Response body
+
+```json
+{
+  "@context": "/api/contexts/User",
+  "@id": "/api/users/2075",
+  "@type": "User",
+  "email": "jean.m@example.com"
+}
+```
+
+You also can retrieve a whole collection.
+
+`https://localhost:8000/api/users.jsonld?properties[]=email`
+
+Response body (limited to 5 items per a page)
+
+```json
+{
+  "@context": "/api/contexts/User",
+  "@id": "/api/users",
+  "@type": "hydra:Collection",
+  "hydra:member": [
+    {
+      "@id": "/api/users/1800",
+      "@type": "User",
+      "email": "reichert.erica@hotmail.com"
+    },
+    {
+      "@id": "/api/users/1801",
+      "@type": "User",
+      "email": "magnus@initxlab.com"
+    },
+    {
+      "@id": "/api/users/1802",
+      "@type": "User",
+      "email": "reta20@hotmail.com"
+    },
+    {
+      "@id": "/api/users/1803",
+      "@type": "User",
+      "email": "camilla.douglas@yahoo.com"
+    },
+    {
+      "@id": "/api/users/1804",
+      "@type": "User",
+      "email": "kathryne.osinski@gmail.com"
+    }
+  ],
+  "hydra:totalItems": 276,
+  "hydra:view": {
+    "@id": "/api/users.jsonld?properties%5B%5D=email&page=1",
+    "@type": "hydra:PartialCollectionView",
+    "hydra:first": "/api/users.jsonld?properties%5B%5D=email&page=1",
+    "hydra:last": "/api/users.jsonld?properties%5B%5D=email&page=56",
+    "hydra:next": "/api/users.jsonld?properties%5B%5D=email&page=2"
+  },
+  "hydra:search": {
+    "@type": "hydra:IriTemplate",
+    "hydra:template": "/api/users.jsonld{?properties[]}",
+    "hydra:variableRepresentation": "BasicRepresentation",
+    "hydra:mapping": [
+      {
+        "@type": "IriTemplateMapping",
+        "variable": "properties[]",
+        "property": null,
+        "required": false
+      }
+    ]
+  }
+}
+```
 
 **OPERATIONS**
 
