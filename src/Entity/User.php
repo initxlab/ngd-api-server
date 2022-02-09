@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -32,9 +34,22 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     "PUT"
 ],
+    attributes: [
+    C::PAGINATION_PER_PAGE => 5,
+    C::FORMATS=>[
+        C::F_JSONLD,
+        C::F_JSON,
+        C::F_HTML,
+        C::F_JSONHAL,
+        /* Local declaration of a csv format, not global scope from in the api_platform conf. Only apply to this resource */
+        C::F_CSV=>[C::MIME_TXT_CSV]
+    ]
+],
     denormalizationContext: ["groups"=>["user:write"]],
     normalizationContext: ["groups"=>["user:read"]]
 )]
+// ADDING PROPERTY FILTERS - See README.MD for usage
+#[ApiFilter(PropertyFilter::class)]
 #[UniqueEntity(fields: ["username"])]
 #[UniqueEntity(fields: ["email"])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -64,14 +79,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     #[Groups(["user:write"])]
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
     #[Groups(["user:read","user:write","warehouse:item:get","warehouse:write"])]
     #[Assert\NotBlank()]
-    private $username;
+    private string $username;
 
     /**
      * @ORM\OneToMany(targetEntity=NgdWarehouse::class, mappedBy="owner",cascade={"persist"},orphanRemoval=true)
