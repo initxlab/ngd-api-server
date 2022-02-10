@@ -12,6 +12,9 @@ use Faker\Generator;
 use Initxlab\Helper\HelperIntegerTrait;
 use JsonException;
 use RuntimeException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+
 /**
  * TODO : SUBJECT TO IMPROVEMENT. SHOULD LOAD USERS FIRST ADD SLUGS
  * Class ApiFixtures
@@ -26,9 +29,10 @@ class ApiFixtures extends Fixture
     private const DATA_PRODUCT_LINE = "product_lines.json";
     private const FILE_IMG_EXTENSIONS = ["jpg","png","gif","png"];
     private const BOOLEANS = [true,false];
-
+    private const TEST_PASSWORD_HASHED = '$2y$13$CywoIa9k2rkywYX6olVyB.BNfKU3gQWq0.dNBqr2J5IMoR9GZyIQe';
     private Generator $faker;
-    public function __construct()
+
+    public function __construct( )
     {
         $this->faker = Faker::create();
     }
@@ -83,11 +87,12 @@ class ApiFixtures extends Fixture
         for( $i = 0; $i < $max; $i++ ){
 
             $user = new User();
+
             $user->setEmail($this->faker->unique()->email());
             $user->setUsername($this->faker->unique()->userName());
-            $user->setPassword('test1');
+            // password : test123
+            $user->setPassword(self::TEST_PASSWORD_HASHED);
 
-            // product line found we create the stock for the user
             if((true === $setStock) && $productLine instanceof NgdProductLine) {
                 $this->loadWarehouses($manager,$user,$productLine);
             }

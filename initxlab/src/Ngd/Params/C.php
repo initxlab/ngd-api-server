@@ -23,6 +23,10 @@ class C
     public const R_WAREHOUSE = "warehouse:read";
     public const ITEM_GET_WAREHOUSE = "warehouse:item:get";
 
+    public const W_USER = "user:write";
+    public const R_USER = "user:read";
+    public const ITEM_GET_USER = "user:item:get";
+
     public const SWAGGER_W_LABEL_WAREHOUSE = "Write-Warehouse";
     public const SWAGGER_R_LABEL_WAREHOUSE = "Read-Warehouse";
 
@@ -53,8 +57,39 @@ class C
     public const PROP_STATS_WAREHOUSE = "countStock";
     public const PROP_NAME = "name";
     public const PROP_PRODUCT = "product";
-    public const PROP_DESC = "description";
+    public const PROP_PRODUCT_NAME = "product.name";
 
+    public const PROP_OWNER = "owner";
+    public const PROP_OWNER_USERNAME = "owner.username";
+
+
+    public const PROP_DESC = "description";
+    public const PROP_EMAIL = "email";
+    public const PROP_USERNAME = "username";
+    public const PRO_STAT_STOCK = "statStock";
     public const MATCH_PARTIAL = "partial";
     public const MATCH_EXACT = "exact";
+
+    // FOR SERIALIZED NAMES SUBJECT TO CHANGES
+    public const LABEL_STOCK = "stock";
+    public const LABEL_STOCKS = "stocks";
+    public const LABEL_PICTURE = "picture";
+    public const LABEL_CREATED_AT = "created_at";
+    public const LABEL_ACTIVE   = "active";
+    public const LABEL_DESCRIPTION   = "description";
+    public const LABEL_STAT_PRODUCT   = "countProducts";
+
+    public const REF_INVERSE_WAREHOUSE = "warehouses";
+
+    // API ROUTES
+    public const ROUTE_APP_LOGIN_NAME = "app_login";
+    public const ROUTE_APP_LOGIN_PATH = "/login";
+
+    public const ROUTE_APP_LOGOUT_NAME = "app_logout";
+    public const ROUTE_APP_LOGOUT_PATH = "/logout";
+
+    // HEADERS
+    public const HEADER_LOCATION = "Location";
+
+    public const KEY_ERROR = "error";
 }
