@@ -10,7 +10,7 @@ git clone https://github.com/initxlab/ngd-api-server.git
  
 **Download Composer dependencies**
 
-You need [Composer](https://getcomposer.org/download/) complete the process. 
+You need [Composer](https://getcomposer.org/download/) to complete the process. 
 Then inside the newly cloned folder run the below in install dependencies from the composer.lock file :
 
 ```
