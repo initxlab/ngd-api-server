@@ -7,16 +7,16 @@ Download or clone the repo from GitHub
 ```
 git clone https://github.com/initxlab/ngd-api-server.git
 ```
- 
+
 **Download Composer dependencies**
 
 You need [Composer](https://getcomposer.org/download/) to complete the process. 
-Then inside the newly cloned folder run the below in install dependencies from the composer.lock file :
+Then inside the newly cloned folder run the below to install dependencies from the composer.lock file :
 
 ```
 composer install
 ```
-
+    
 **Configure the .env (or .env.local) File**
 
 Open the `.env` file and edit the entry `DATABASE_URL` with your environment config. 
